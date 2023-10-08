@@ -1,0 +1,55 @@
+
+
+
+ alias kccid='k config current-context'
+
+#-------
+Secrets
+#-------
+
+-- create generic secret from file
+kubectl create secret generic db-user-pass-cka17-arch --from-file=/opt/db-user-pass 
+
+
+
+student-node ~ ➜  k top pod -A --context=cluster4 |  grep -v NAME | sort -n -k4 -r | head -n 1 | awk -F " " '{print $1,$2}'
+kube-system kube-apiserver-cluster4-controlplane
+
+student-node ~ ➜  echo "cluster4,kube-system,kube-apiserver-cluster4-controlplane" >> /opt/high_memory_pod 
+student-node ~ ➜  cat /opt/high_memory_pod 
+
+
+how to find service associated with a pod?
+
+cron schedule?
+
+
+spin a test cluster to verify service crul
+
+
+Let's check the POD status
+kubectl get pod --context=cluster4 -n kube-system
+You will see that kube-controller-manager-cluster4-controlplane pod is crashing or restarting. So let's try to watch the logs.
+
+kubectl logs -f kube-controller-manager-cluster4-controlplane --context=cluster4 -n kube-system
+You will see some logs as below:
+
+ leaderelection.go:330] error retrieving resource lock kube-system/kube-controller-manager: Get "https://10.10.129.21:6443/apis/coordination.k8s.io/v1/namespaces/kube-system/leases/kube-controller-manager?timeout=5s": dial tcp 10.10.129.21:6443: connect: connection refused
+You will notice that somehow the connection to the kube api is breaking, let's check if kube api pod is healthy.
+
+kubectl get pod --context=cluster4 -n kube-system
+Now you might notice that kube-apiserver-cluster4-controlplane pod is also restarting, so we should dig into its logs or relevant events.
+
+kubectl logs -f kube-apiserver-cluster4-controlplane -n kube-system
+kubectl get event --field-selector involvedObject.name=kube-apiserver-cluster4-controlplane -n kube-system
+In events you will see this error
+
+Warning   Unhealthy      pod/kube-apiserver-cluster4-controlplane   Liveness probe failed: Get "https://10.10.132.25:6444/livez": dial tcp 10.10.132.25:6444: connect: connection refused
+From this we can see that the Liveness probe is failing for the kube-apiserver-cluster4-controlplane pod, and we can see its trying to connect to port 6444 port but the default api port is 6443. So let's look into the kube api server manifest.
+
+ssh cluster4-controlplane
+vi /etc/kubernetes/manifests/kube-apiserver.yaml
+Under livenessProbe: you will see the port: value is 6444, change it to 6443 and save. Now wait for few seconds let the kube api pod come up.
+
+kubectl get pod -n kube-system
+Watch the PODs status for some time and make sure these are not restarting now.
