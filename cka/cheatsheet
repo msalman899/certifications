@@ -53,3 +53,17 @@ Under livenessProbe: you will see the port: value is 6444, change it to 6443 and
 
 kubectl get pod -n kube-system
 Watch the PODs status for some time and make sure these are not restarting now.
+
+
+#-------
+pods custom output
+#-------
+
+student-node ~ ➜  kubectl get pods -n spectra-1267 -o=custom-columns='POD_NAME:metadata.name,IP_ADDR:status.podIP' --sort-by=.status.podIP
+
+POD_NAME   IP_ADDR
+pod-12     10.42.0.18
+pod-23     10.42.0.19
+pod-34     10.42.0.20
+pod-21     10.42.0.21
+...
