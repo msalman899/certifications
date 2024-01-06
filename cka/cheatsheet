@@ -18,6 +18,7 @@ kube-system kube-apiserver-cluster4-controlplane
 student-node ~ ➜  echo "cluster4,kube-system,kube-apiserver-cluster4-controlplane" >> /opt/high_memory_pod 
 student-node ~ ➜  cat /opt/high_memory_pod 
 
+Q. Install etcutil
 
 Q. How to find service associated with a pod?
 
