@@ -41,6 +41,16 @@ rm -rf etcd-$ETCD_VERSION-linux-amd64
 
 etcdctl --version
 
+
+/////////
+
+
+cluster2-controlplane ~ ➜ cd /tmp
+cluster2-controlplane ~ ➜ export RELEASE=$(curl -s https://api.github.com/repos/etcd-io/etcd/releases/latest | grep tag_name | cut -d '"' -f 4)
+cluster2-controlplane ~ ➜ wget https://github.com/etcd-io/etcd/releases/download/${RELEASE}/etcd-${RELEASE}-linux-amd64.tar.gz
+cluster2-controlplane ~ ➜ tar xvf etcd-${RELEASE}-linux-amd64.tar.gz ; cd etcd-${RELEASE}-linux-amd64
+cluster2-controlplane ~ ➜ mv etcd etcdctl  /usr/local/bin/
+
 #-------
 Secrets
 #-------
