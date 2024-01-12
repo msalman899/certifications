@@ -1,7 +1,7 @@
 
 
 
- alias kccid='k config current-context'
+alias kccid='k config current-context'
 
 alias k='kubectl'
 alias kg='kubectl get'
@@ -50,6 +50,30 @@ cluster2-controlplane ~ ➜ export RELEASE=$(curl -s https://api.github.com/repo
 cluster2-controlplane ~ ➜ wget https://github.com/etcd-io/etcd/releases/download/${RELEASE}/etcd-${RELEASE}-linux-amd64.tar.gz
 cluster2-controlplane ~ ➜ tar xvf etcd-${RELEASE}-linux-amd64.tar.gz ; cd etcd-${RELEASE}-linux-amd64
 cluster2-controlplane ~ ➜ mv etcd etcdctl  /usr/local/bin/
+
+
+#--------------
+test pod to test curling
+#---------------
+
+kubectl run --rm  -i test-curl-pod --image=curlimages/curl --restart=Never -- curl -m 2 external-webserver-cka03-svcn
+
+#-----------------
+ngins pod
+#--------------
+
+kubectl run nginx-resolver-cka06-svcn --image=nginx
+kubectl expose pod/nginx-resolver-cka06-svcn --name=nginx-resolver-service-cka06-svcn --port=80 --target-port=80 --type=ClusterIP 
+
+#----------------------
+get svc and pod dns names
+#------------------------
+
+kubectl run test-nslookup --image=busybox:1.28 --rm -it --restart=Never -- nslookup nginx-resolver-service-cka06-svcn
+
+kubectl run test-nslookup --image=busybox:1.28 --rm -it --restart=Never -- nslookup $POD_IP.default.pod
+
+
 
 #-------
 Secrets
