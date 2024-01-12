@@ -3,6 +3,21 @@
 
  alias kccid='k config current-context'
 
+alias k='kubectl'
+alias kg='kubectl get'
+alias ke='kubectl edit'
+alias kd='kubectl describe'
+alias kgp='kubectl get pods'
+alias kgd='kubectl get deployments'
+alias kcc='kubectl config use-context'
+alias kcns='kubectl config set-context --current --namespace='
+
+
+alias kdd='kubectl delete'
+alias kns='kubens'
+alias kcx='kubectx'
+alias wkgp='watch kubectl get pod'
+
 #-------
 Secrets
 #-------
