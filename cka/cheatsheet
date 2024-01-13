@@ -75,6 +75,16 @@ kubectl run test-nslookup --image=busybox:1.28 --rm -it --restart=Never -- nsloo
 
 
 
+#-----------------
+if kubectl unable to reach api-server
+#--------------
+
+journalctl -u kubelet -f
+journalctl -u kubelet -f | grep -v 'connect: connection refused'
+cluster4-controlplane kubelet[2240]: E0923 04:38:15.630925    
+2240 file.go:187] "Could not process manifest file" err="invalid pod: [spec.containers[0].volumeMounts[1].name: Not found: \"etcd-cert\"]" path="/etc/kubernetes/manifests/etcd.yaml" -- most likely a typo or thing
+systemctl restart kubelet
+
 #-------
 Secrets
 #-------
