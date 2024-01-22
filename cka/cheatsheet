@@ -19,6 +19,35 @@ alias kcx='kubectx'
 alias wkgp='watch kubectl get pod'
 
 
+alias k=kubectl                         # will already be pre-configured
+
+alias curltest='kubectl run --rm  -i curltestpod --image=curlimages/curl --restart=Never -- curl -m 2 --connect-timeout 2'   # curltest http://svcname
+alias nslookuptest='kubectl run --rm  -i nslookuptest --image=busybox:1.28 --restart=Never -- nslookup'   # nslookuptest scvname.default.svc
+
+export do="--dry-run=client -o yaml"    # k create deploy nginx --image=nginx $do
+export now="--force --grace-period 0"   # k delete pod x $now
+
+
+check current namespace
+kubectl config gre-contexts | grep -i "current"
+
+------
+
+curl alias
+
+ep manifest
+
+--connect-timeout 5 
+---------
+
+
+-------
+pod antiaffinity
+-------------
+
+behave deployment as daemonset to plave one pod per node except master node
+
+
 #-----
 etcdctl
 ------
@@ -121,3 +150,10 @@ pod-23     10.42.0.19
 pod-34     10.42.0.20
 pod-21     10.42.0.21
 ...
+
+
+#---------------------
+scaling replica set
+#---------------------
+
+k scale sts o3db --replicas 1
