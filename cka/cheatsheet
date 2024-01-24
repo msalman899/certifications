@@ -10,7 +10,11 @@ alias kd='kubectl describe'
 alias kgp='kubectl get pods'
 alias kgd='kubectl get deployments'
 alias kcc='kubectl config use-context'
-alias kcns='kubectl config set-context --current --namespace='
+alias kn='kubectl config set-context --current --namespace '
+alias kcid='kubectl config gre-contexts | grep -i "*"'  -- check current namespace
+
+kn default        # set default to default
+kn my-namespace   # set default to my-namespace
 
 
 alias kdd='kubectl delete'
@@ -28,8 +32,7 @@ export do="--dry-run=client -o yaml"    # k create deploy nginx --image=nginx $d
 export now="--force --grace-period 0"   # k delete pod x $now
 
 
-check current namespace
-kubectl config gre-contexts | grep -i "current"
+
 
 ------
 
@@ -157,3 +160,17 @@ scaling replica set
 #---------------------
 
 k scale sts o3db --replicas 1
+
+
+------------------
+kubeadm joining nodes
+----------------------
+
+
+root@cluster3-controlplane1:~# kubeadm token create --print-join-command
+kubeadm join 192.168.100.31:6443 --token lyl4o0.vbkmv9rdph5qd660 --discovery-token-ca-cert-hash sha256:b0c94ccf935e27306ff24bce4b8f611c621509e80075105b3f25d296a94927ce 
+
+
+➜ ssh cluster3-node2
+
+➜ root@cluster3-node2:~# kubeadm join 192.168.100.31:6443 --token lyl4o0.vbkmv9rdph5qd660 --discovery-token-ca-cert-hash sha256:b0c94ccf935e27306ff24bce4b8f611c621509e80075105b3f25d296a94927ce 
