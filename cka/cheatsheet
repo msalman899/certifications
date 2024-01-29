@@ -174,3 +174,10 @@ kubeadm join 192.168.100.31:6443 --token lyl4o0.vbkmv9rdph5qd660 --discovery-tok
 ➜ ssh cluster3-node2
 
 ➜ root@cluster3-node2:~# kubeadm join 192.168.100.31:6443 --token lyl4o0.vbkmv9rdph5qd660 --discovery-token-ca-cert-hash sha256:b0c94ccf935e27306ff24bce4b8f611c621509e80075105b3f25d296a94927ce 
+
+--------
+openssl
+---------
+
+OpenSSL
+comfortable generating certificates (.key, .crt, .csr, x509)
