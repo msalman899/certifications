@@ -32,16 +32,22 @@ export do="--dry-run=client -o yaml"    # k create deploy nginx --image=nginx $d
 export now="--force --grace-period 0"   # k delete pod x $now
 
 
-
-
-------
-
-curl alias
-
+==============
 ep manifest
+=============
 
---connect-timeout 5 
----------
+student-node ~ ➜ kubectl --context cluster3 apply -f - <<EOF
+apiVersion: v1
+kind: Endpoints
+metadata:
+  # the name here should match the name of the Service
+  name: external-webserver-cka03-svcn
+subsets:
+  - addresses:
+      - ip: $IP_ADDR
+    ports:
+      - port: 9999
+EOF
 
 
 -------
