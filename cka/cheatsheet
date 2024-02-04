@@ -1,29 +1,23 @@
-
-
+alias k=kubectl    # will already be pre-configured
 
 alias kccid='k config current-context'
-
 alias k='kubectl'
 alias kg='kubectl get'
 alias ke='kubectl edit'
 alias kd='kubectl describe'
 alias kgp='kubectl get pods'
 alias kgd='kubectl get deployments'
-alias kcc='kubectl config use-context'
-alias kn='kubectl config set-context --current --namespace '
-alias kcid='kubectl config gre-contexts | grep -i "*"'  -- check current namespace
-
-kn default        # set default to default
-kn my-namespace   # set default to my-namespace
-
-
 alias kdd='kubectl delete'
 alias kns='kubens'
 alias kcx='kubectx'
 alias wkgp='watch kubectl get pod'
 
 
-alias k=kubectl                         # will already be pre-configured
+alias kns='kubectl config set-context --current --namespace '
+alias kcid='kubectl config get-contexts | grep -i "*"'  -- check current namespace
+
+kns default        # set default to default
+kns my-namespace   # set default to my-namespace
 
 alias curltest='kubectl run --rm  -i curltestpod --image=curlimages/curl --restart=Never -- curl -m 2 --connect-timeout 2'   # curltest http://svcname
 alias nslookuptest='kubectl run --rm  -i nslookuptest --image=busybox:1.28 --restart=Never -- nslookup'   # nslookuptest scvname.default.svc
@@ -50,16 +44,16 @@ subsets:
 EOF
 
 
--------
-pod antiaffinity
--------------
+--------------------
+pod anti-affinity
+--------------------
 
-behave deployment as daemonset to plave one pod per node except master node
+behave deployment as daemonset to place one pod per node except the master node
 
 
-#-----
+----------
 etcdctl
-------
+----------
 
 
 #!/bin/bash
@@ -90,15 +84,15 @@ cluster2-controlplane ~ ➜ tar xvf etcd-${RELEASE}-linux-amd64.tar.gz ; cd etcd
 cluster2-controlplane ~ ➜ mv etcd etcdctl  /usr/local/bin/
 
 
-#--------------
+#-------------------------
 test pod to test curling
-#---------------
+#------------------------
 
 kubectl run --rm  -i test-curl-pod --image=curlimages/curl --restart=Never -- curl -m 2 external-webserver-cka03-svcn
 
 #-----------------
 ngins pod
-#--------------
+#-----------------
 
 kubectl run nginx-resolver-cka06-svcn --image=nginx
 kubectl expose pod/nginx-resolver-cka06-svcn --name=nginx-resolver-service-cka06-svcn --port=80 --target-port=80 --type=ClusterIP 
@@ -113,9 +107,9 @@ kubectl run test-nslookup --image=busybox:1.28 --rm -it --restart=Never -- nsloo
 
 
 
-#-----------------
+#----------------------------------------
 if kubectl unable to reach api-server
-#--------------
+#----------------------------------------
 
 journalctl -u kubelet -f
 journalctl -u kubelet -f | grep -v 'connect: connection refused'
@@ -123,9 +117,9 @@ cluster4-controlplane kubelet[2240]: E0923 04:38:15.630925
 2240 file.go:187] "Could not process manifest file" err="invalid pod: [spec.containers[0].volumeMounts[1].name: Not found: \"etcd-cert\"]" path="/etc/kubernetes/manifests/etcd.yaml" -- most likely a typo or thing
 systemctl restart kubelet
 
-#-------
+#----------
 Secrets
-#-------
+#----------
 
 -- create generic secret from file
 kubectl create secret generic db-user-pass-cka17-arch --from-file=/opt/db-user-pass 
@@ -140,7 +134,7 @@ student-node ~ ➜  cat /opt/high_memory_pod
 
 Q. Install etcutil
 
-Q. How to find service associated with a pod?
+Q. How to find a service associated with a pod?
 
 Q. cron schedule?
 
